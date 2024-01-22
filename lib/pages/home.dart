@@ -14,19 +14,22 @@ class HomePage extends StatefulWidget {
 
 class Category {
   String key;
-  String title;
-  Category(this.key, this.title);
+  Category(this.key);
 }
 
 class _HomePageState extends State<HomePage> {
   List<Category> categories = [
-    Category('business', 'İş'),
-    Category('entertainment', 'Eğlence'),
-    Category('general', 'Genel'),
-    Category('health', 'Sağlık'),
-    Category('science', 'Bilim'),
-    Category('sports', 'Spor'),
-    Category('technology', 'Teknoloji'),
+    Category('general'),
+    Category('technology'),
+    Category('sports'),
+    Category(
+      'entertainment',
+    ),
+    Category('business'),
+    Category('science'),
+    Category(
+      'health',
+    ),
   ];
 
   @override
@@ -34,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     final vm = Provider.of<ArticleListViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Haberler'),
+        title: const Text('News'),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -58,14 +61,22 @@ class _HomePageState extends State<HomePage> {
     for (int i = 0; i < categories.length; i++) {
       list.add(GestureDetector(
         onTap: () => vm.getNews(categories[i].key),
-        child: Card(
-            child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            categories[i].key.toUpperCase(),
-            style: const TextStyle(fontSize: 16),
-          ),
-        )),
+        child: Container(
+            margin:
+                EdgeInsets.only(left: 4.0, top: 10.0, right: 4.0, bottom: 2.0),
+            child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                elevation: 5.0,
+                shadowColor: Colors.grey,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    categories[i].key.toUpperCase(),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ))),
       ));
     }
     return list;
