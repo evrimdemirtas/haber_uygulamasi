@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         Image.network(vm.viewModel.articles[index].urlToImage ??
-                            'https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132484366.jpg'),
+                            'https://rutecprojekt.de/assets/images/2/News_AdobeStock_116225048_neu-de28855b.jpg'),
                         ListTile(
                           title: Text(
                             vm.viewModel.articles[index].title ?? '',
