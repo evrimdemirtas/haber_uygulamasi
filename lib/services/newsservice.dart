@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:haber_uygulamasi/models/articles.dart';
 import 'package:http/http.dart' as http;
 import '../models/news.dart';
+import '../pages/home.dart';
 
 class NewsServices {
   Future<List<Articles>> fetchNews(String category) async {

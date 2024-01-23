@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:haber_uygulamasi/models/articles.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../viewmodel/article_list_viewmodel.dart';
 import '../models/category.dart';
+import '../services/newsservice.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,6 +20,10 @@ class Category {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? searchWord;
+  bool isSearching = false;
+  TextEditingController seachController = TextEditingController();
+
   List<Category> categories = [
     Category('general'),
     Category('technology'),
@@ -35,10 +41,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ArticleListViewModel>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('News'),
-      ),
+      appBar: isSearching
+          ? searchAppBar()
+          : AppBar(
+              backgroundColor: Colors.red,
+              title: const Text('News'),
+              actions: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isSearching = true;
+                        });
+                      },
+                      icon: const Icon(Icons.search)),
+                ]),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -53,6 +71,44 @@ class _HomePageState extends State<HomePage> {
           getWidgetByStatus(vm)
         ],
       ),
+    );
+  }
+
+  searchAppBar() {
+    return AppBar(
+      backgroundColor: Colors.red,
+      leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            setState(() {
+              isSearching = false;
+              searchWord = null;
+              seachController.text = "";
+            });
+          }),
+      title: TextField(
+        controller: seachController,
+        style: const TextStyle(color: Colors.white, fontSize: 18),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+            hintText: "Search",
+            hintStyle: TextStyle(color: Colors.white),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent),
+            )),
+      ),
+      actions: [
+        IconButton(
+            onPressed: () {
+              setState(() {
+                searchWord = seachController.text;
+              });
+            },
+            icon: const Icon(Icons.search)),
+      ],
     );
   }
 
