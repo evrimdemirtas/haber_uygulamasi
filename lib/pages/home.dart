@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: isSearching
-          ? searchAppBar()
+          ? searchAppBar(vm)
           : AppBar(
               backgroundColor: Colors.red,
               title: const Text('News'),
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  searchAppBar() {
+  searchAppBar(ArticleListViewModel vm) {
     return AppBar(
       backgroundColor: Colors.red,
       leading: IconButton(
@@ -103,9 +103,12 @@ class _HomePageState extends State<HomePage> {
       actions: [
         IconButton(
             onPressed: () {
-              setState(() {
-                searchWord = seachController.text;
-              });
+              setState(
+                () {
+                  searchWord = seachController.text;
+                  vm.getNews("", seachController.text);
+                },
+              );
             },
             icon: const Icon(Icons.search)),
       ],
@@ -116,7 +119,7 @@ class _HomePageState extends State<HomePage> {
     List<GestureDetector> list = [];
     for (int i = 0; i < categories.length; i++) {
       list.add(GestureDetector(
-        onTap: () => vm.getNews(categories[i].key),
+        onTap: () => vm.getNews(categories[i].key, ""),
         child: Container(
             margin:
                 EdgeInsets.only(left: 4.0, top: 10.0, right: 4.0, bottom: 2.0),

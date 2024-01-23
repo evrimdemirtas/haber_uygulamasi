@@ -5,17 +5,17 @@ import 'article_viewmodel.dart';
 enum Status { initial, loading, loaded }
 
 class ArticleListViewModel extends ChangeNotifier {
-  ArticleViewModel viewModel = ArticleViewModel('general', []);
+  ArticleViewModel viewModel = ArticleViewModel('', []);
   Status status = Status.initial;
 
   ArticleListViewModel() {
-    getNews('general');
+    getNews("", "");
   }
 
-  Future<void> getNews(String category) async {
+  Future<void> getNews(String category, String searchq) async {
     status = Status.loading;
     notifyListeners();
-    viewModel.articles = await NewsServices().fetchNews(category);
+    viewModel.articles = await NewsServices().fetchNews(category, searchq);
     status = Status.loaded;
     notifyListeners();
   }

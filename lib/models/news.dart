@@ -13,7 +13,9 @@ class News {
     if (json['articles'] != null) {
       articles = <Articles>[];
       json['articles'].forEach((v) {
-        articles!.add(new Articles.fromJson(v));
+        if (!(v['url'] == "https://removed.com")) {
+          articles!.add(new Articles.fromJson(v));
+        }
       });
     }
   }
