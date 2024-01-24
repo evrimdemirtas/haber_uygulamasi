@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:haber_uygulamasi/models/articles.dart';
+import 'package:haber_uygulamasi/pages/article_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../viewmodel/article_list_viewmodel.dart';
@@ -46,8 +47,17 @@ class _HomePageState extends State<HomePage> {
       appBar: isSearching
           ? searchAppBar(vm)
           : AppBar(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
+                ),
+              ),
               backgroundColor: Colors.red,
-              title: const Text('News'),
+              title: const Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Text('NEWS'),
+              ),
               actions: [
                   IconButton(
                       onPressed: () {
@@ -77,6 +87,12 @@ class _HomePageState extends State<HomePage> {
   searchAppBar(ArticleListViewModel vm) {
     return AppBar(
       backgroundColor: Colors.red,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20.0),
+          bottomRight: Radius.circular(20.0),
+        ),
+      ),
       leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -90,7 +106,7 @@ class _HomePageState extends State<HomePage> {
         controller: seachController,
         style: const TextStyle(color: Colors.white, fontSize: 18),
         cursorColor: Colors.white,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             hintText: "Search",
             hintStyle: TextStyle(color: Colors.white),
             enabledBorder: UnderlineInputBorder(
@@ -121,8 +137,8 @@ class _HomePageState extends State<HomePage> {
       list.add(GestureDetector(
         onTap: () => vm.getNews(categories[i].key, ""),
         child: Container(
-            margin:
-                EdgeInsets.only(left: 4.0, top: 10.0, right: 4.0, bottom: 2.0),
+            margin: const EdgeInsets.only(
+                left: 4.0, top: 10.0, right: 4.0, bottom: 2.0),
             child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
@@ -151,8 +167,10 @@ class _HomePageState extends State<HomePage> {
                   return Card(
                     child: Column(
                       children: [
-                        Image.network(vm.viewModel.articles[index].urlToImage ??
-                            'https://rutecprojekt.de/assets/images/2/News_AdobeStock_116225048_neu-de28855b.jpg'),
+                        Image.network(
+                          vm.viewModel.articles[index].urlToImage ??
+                              'https://rutecprojekt.de/assets/images/2/News_AdobeStock_116225048_neu-de28855b.jpg',
+                        ),
                         ListTile(
                           title: Text(
                             vm.viewModel.articles[index].title ?? '',
@@ -164,13 +182,20 @@ class _HomePageState extends State<HomePage> {
                         ButtonBar(
                           children: [
                             MaterialButton(
-                              onPressed: () async {
-                                await launchUrl(Uri.parse(
-                                    vm.viewModel.articles[index].url ?? ''));
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ArticlePage(
+                                          url: vm.viewModel.articles[index]
+                                                  .url ??
+                                              ''),
+                                    ));
                               },
                               child: const Text(
-                                'Detail',
-                                style: TextStyle(color: Colors.blue),
+                                'Read More',
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 18),
                               ),
                             )
                           ],
